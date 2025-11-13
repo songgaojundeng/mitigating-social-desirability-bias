@@ -2,14 +2,11 @@ from openai import OpenAI
 import openai
 import numpy as np
 import time
+import os
 
-# Set your api key
-my_api_key = "YOU_API_KEY"
 client = OpenAI(
     # defaults to os.environ.get("OPENAI_API_KEY")
-    api_key = my_api_key,
     timeout=20.0,
-
 )
 
 def lc(t):
