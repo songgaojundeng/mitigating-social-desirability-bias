@@ -1,9 +1,10 @@
 from openai import OpenAI
-import openai
 import numpy as np
-import time
-import os
+from dotenv import load_dotenv
 
+model = "gpt-5-mini"
+
+load_dotenv()
 client = OpenAI(
     # defaults to os.environ.get("OPENAI_API_KEY")
     timeout=20.0,
@@ -37,21 +38,14 @@ def extract_probs(lp):
         result[v[0]] = v[1]
     return result
 
-def do_query(system_prompt, user_prompt, max_tokens=2, engine="gpt-3.5-turbo"):
-    messages = [{"role": "system", "content": system_prompt}, {"role": "user", "content": user_prompt}]
-    response = client.chat.completions.create(
+def do_query(system_prompt, user_prompt, engine=model):
+    response = client.responses.create(
         model=engine,
-        messages=messages,
-        max_tokens=max_tokens,
+        reasoning={"effort": "medium"},
+        input=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt}
+        ]
     )
-    return response.choices[0].message.content
-
-
-def run_prompts(prompts, engine="gpt-3.5-turbo"):
-    results = []
-    for prompt in prompts:
-        response = do_query(prompt, max_tokens=2, engine=engine)
-        results.append(response)
-        time.sleep(0.1)
-    return results
+    return response.output_text
 

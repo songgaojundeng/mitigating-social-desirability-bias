@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=MLMM-2020-main
+#SBATCH --job-name=MLLM-2020-main
 #SBATCH --output=logs/%x_%j.out    
 #SBATCH --ntasks-per-node=1
 #SBATCH --nodes=1
