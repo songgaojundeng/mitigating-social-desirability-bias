@@ -47,3 +47,14 @@ def do_query(system_prompt, user_prompt, max_tokens=2, engine=model):
     )
     return response.choices[0].message.content
 
+if __name__ == "__main__":
+    system_prompt = "You are a helpful assistant."
+    user_prompt = "Say the word hi"
+    print("Sending test query...")
+    try:
+        output = do_query(system_prompt, user_prompt)
+        print("Model response:")
+        print(output)
+    except Exception as e:
+        print("Error during API call:", e)
+

@@ -2,7 +2,7 @@ from openai import OpenAI
 import numpy as np
 from dotenv import load_dotenv
 
-model = "gpt-4.1-mini"
+model = "gpt-5-mini"
 
 load_dotenv()
 client = OpenAI(
@@ -38,12 +38,15 @@ def extract_probs(lp):
         result[v[0]] = v[1]
     return result
 
-def do_query(system_prompt, user_prompt, max_tokens=2, engine=model):
-    messages = [{"role": "system", "content": system_prompt}, {"role": "user", "content": user_prompt}]
-    response = client.chat.completions.create(
+def do_query(system_prompt, user_prompt, engine=model):
+    response = client.responses.create(
         model=engine,
-        messages=messages,
-        max_tokens=max_tokens,
+        reasoning={"effort": "low"},
+        text={"verbosity": "low"},
+        input=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt}
+        ]
     )
-    return response.choices[0].message.content
+    return response.output_text
 
