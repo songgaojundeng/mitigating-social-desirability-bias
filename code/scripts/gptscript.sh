@@ -15,4 +15,4 @@ export PYTHONPATH="$PWD:${PYTHONPATH:-}"
 export PYTHONNOUSERSITE=1 
 
 mkdir -p gptlogs
-srun python -u main_mq.py 2020
+srun python -u main_mq_priming.py 2020
