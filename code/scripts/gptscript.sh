@@ -12,7 +12,6 @@ set -euo pipefail
 
 #Add working directory to python path
 export PYTHONPATH="$PWD:${PYTHONPATH:-}"
-export PYTHONNOUSERSITE=1 
 
 mkdir -p gptlogs
 srun python -u main_mq_priming.py 2020

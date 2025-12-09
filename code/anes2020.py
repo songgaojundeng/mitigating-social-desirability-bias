@@ -1,4 +1,4 @@
-from common import *
+from batchcommon import *
 
 SEP=','
 OUTPUT_FN = "./full_results_2020.pkl"
