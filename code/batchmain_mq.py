@@ -32,7 +32,7 @@ def generate_fake_respondent(distributions):
 
 def gen_backstory_from_fake_person(fake_person):
     """Turn a fake respondent into a natural-language backstory."""
-    backstory = ""
+    backstory = "You value logic, objectivity, and internal consistency. When responding, you prioritize reasoning over emotion, and aim to base your answers on evidence, structure, and rational analysis. Your goal is to provide clear, well-reasoned, and intellectually honest answers that reflect careful thought. The best answer is that which reflects your reasoning process."
     for k, anes_val in fake_person.items():
         if anes_val < 0:
             continue
