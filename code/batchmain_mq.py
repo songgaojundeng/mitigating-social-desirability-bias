@@ -32,7 +32,7 @@ def generate_fake_respondent(distributions):
 
 def gen_backstory_from_fake_person(fake_person):
     """Turn a fake respondent into a natural-language backstory."""
-    backstory = "In this study, we are exploring how people naturally respond to various questions. To ensure meaningful results, it is important that responses reflect your genuine thoughts and feelings. There are no correct or desirable answers, and your responses will not be evaluated or judged. Please answer honestly and without concern for how your answers might be perceived. Your sincerity helps us better understand authentic human responses."
+    backstory = ""
     for k, anes_val in fake_person.items():
         if anes_val < 0:
             continue
@@ -73,7 +73,7 @@ My answer is
 # ---------------------------------------------------------------------
 anesdf = pd.read_csv(ANES_FN, sep=SEP, encoding="latin-1", low_memory=False)
 anes_2020_questionnaire = pd.read_excel(
-    "./ANES_2020_multiple_questions_selected.xlsx"
+    "./ANES_2020_multiple_questions_selected_reverse_v2.xlsx"
 )
 distributions = compute_demographic_distribution(anesdf)
 
