@@ -67,10 +67,6 @@ My answer is
 """
     return user_prompt
 
-
-# ---------------------------------------------------------------------
-# Load data and precompute distributions
-# ---------------------------------------------------------------------
 anesdf = pd.read_csv(ANES_FN, sep=SEP, encoding="latin-1", low_memory=False)
 anes_2020_questionnaire = pd.read_excel(
     "./ANES_2020_multiple_questions_selected_reformulated.xlsx"
@@ -87,9 +83,6 @@ END_INDEX = 9    # inclusive
 # Batch size for model calls – tune this based on GPU memory
 BATCH_SIZE = 4
 
-# ---------------------------------------------------------------------
-# Main loop over questions
-# ---------------------------------------------------------------------
 for q_idx in range(START_INDEX, END_INDEX + 1):
     row = anes_2020_questionnaire.iloc[q_idx]
     full_results = []
@@ -130,15 +123,12 @@ for q_idx in range(START_INDEX, END_INDEX + 1):
             batch_fake_ids.append(fake_id)
 
         # One batched model call instead of many single calls
-        # do_query_batch now decodes like do_query and returns digits (or "")
-
         batch_responses = do_query_batch_old_debug(
             batch_system_prompts,
             batch_user_prompts,
-            fake_ids=batch_fake_ids,
             max_tokens=10,
-            print_full_prompt=True,  # set False if output is too spammy
         )
+
 
         # Collect results for this batch
         for fake_id, fake_person, full_prompt, resp in zip(

@@ -192,18 +192,14 @@ def classify_batch(system_prompts, user_prompts, num_options: int = 5, engine=No
 def do_query_batch_old_debug(
     system_prompts,
     user_prompts,
-    fake_ids=None,
     max_tokens: int = 10,
     engine=None,
-    print_full_prompt: bool = True,
 ):
     if engine is None:
         engine = model
 
     assert len(system_prompts) == len(user_prompts)
     batch_size = len(system_prompts)
-    if fake_ids is not None:
-        assert len(fake_ids) == batch_size
     if batch_size == 0:
         return []
 
@@ -233,20 +229,18 @@ def do_query_batch_old_debug(
     attention_mask = inputs["attention_mask"]
     max_input_len = input_ids.shape[1]
 
-    # --- HARD BLOCK the chat control tokens ---
-    # These are the ones you are literally seeing in the failure output.
-    start_header_id = tokenizer.convert_tokens_to_ids("<|start_header_id|>")
-    end_header_id   = tokenizer.convert_tokens_to_ids("<|end_header_id|>")
-    eot_id          = tokenizer.convert_tokens_to_ids("<|eot_id|>")
-
+    # Hard-block chat control tokens
     blocked = []
-    for tid in [start_header_id, end_header_id, eot_id]:
+    for tok in ("<|start_header_id|>", "<|end_header_id|>", "<|eot_id|>"):
+        tid = tokenizer.convert_tokens_to_ids(tok)
         if tid is not None and tid != tokenizer.unk_token_id:
             blocked.append(int(tid))
 
-    logits_processor = LogitsProcessorList([BlockTokensLogitsProcessor(blocked)]) if blocked else None
+    logits_processor = (
+        LogitsProcessorList([BlockTokensLogitsProcessor(blocked)]) if blocked else None
+    )
 
-    # Generate (deterministic, no sampling)
+    # Generate (deterministic)
     with torch.inference_mode():
         outputs = engine.generate(
             input_ids=input_ids,
@@ -258,49 +252,13 @@ def do_query_batch_old_debug(
             logits_processor=logits_processor,
         )
 
+    # Decode + extract digit
     responses = []
     for i in range(batch_size):
         response_tokens = outputs[i][max_input_len:]
-        raw_text = tokenizer.decode(response_tokens, skip_special_tokens=True)
-        text = raw_text.strip()
-
+        text = tokenizer.decode(response_tokens, skip_special_tokens=True).strip()
         m = re.search(r"([1-5])", text)
-        if m:
-            responses.append(m.group(1))
-        else:
-            responses.append("")
-
-            fid = fake_ids[i] if fake_ids is not None else f"(batch_idx={i})"
-            print("\n" + "=" * 80)
-            print("⚠️  NO DIGIT FOUND")
-            print("Fake ID:", fid)
-            print("Batch index:", i)
-
-            print("max_input_len:", max_input_len)
-            print("len(outputs[i]):", outputs[i].shape[0])
-            print("generated_len:", outputs[i].shape[0] - max_input_len)
-            print("raw generated token ids (first 10):", response_tokens[:10].tolist())
-            print(
-                "decoded(skip_special_tokens=False):",
-                repr(tokenizer.decode(response_tokens, skip_special_tokens=False)),
-            )
-
-            print("RAW decoded output (skip_special_tokens=True):", repr(raw_text))
-            print("STRIPPED output:", repr(text))
-            print("-" * 80)
-
-            if print_full_prompt:
-                print("FULL PROMPT (system+user via chat template):")
-                print(prompts[i])
-                print("-" * 80)
-
-            print("SYSTEM PROMPT:")
-            print(system_prompts[i])
-            print("-" * 80)
-
-            print("USER PROMPT:")
-            print(user_prompts[i])
-            print("=" * 80 + "\n")
+        responses.append(m.group(1) if m else "")
 
     return responses
 
