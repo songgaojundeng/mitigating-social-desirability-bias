@@ -44,6 +44,7 @@ def do_query(system_prompt, user_prompt, max_tokens=2, engine=model):
         model=engine,
         messages=messages,
         max_tokens=max_tokens,
+        temperature=0.0,
     )
     return response.choices[0].message.content
 

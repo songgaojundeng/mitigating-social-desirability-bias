@@ -8,7 +8,7 @@ from batchcommon import *
 
 # ANES-specific imports (2020 case for now)
 if sys.argv[1] == "2020":
-    from anes2020 import *
+    from anes2020_thirdperson import *
 
 foi_keys = fields_of_interest.keys()
 
@@ -73,7 +73,7 @@ My answer is
 # ---------------------------------------------------------------------
 anesdf = pd.read_csv(ANES_FN, sep=SEP, encoding="latin-1", low_memory=False)
 anes_2020_questionnaire = pd.read_excel(
-    "./ANES_2020_multiple_questions_selected_reverse_v2.xlsx"
+    "./ANES_2020_multiple_questions_selected_reformulated.xlsx"
 )
 distributions = compute_demographic_distribution(anesdf)
 
@@ -131,10 +131,13 @@ for q_idx in range(START_INDEX, END_INDEX + 1):
 
         # One batched model call instead of many single calls
         # do_query_batch now decodes like do_query and returns digits (or "")
-        batch_responses = classify_batch(
+
+        batch_responses = do_query_batch_old_debug(
             batch_system_prompts,
             batch_user_prompts,
-            num_options=5,  # maximum number of choices you ever have
+            fake_ids=batch_fake_ids,
+            max_tokens=10,
+            print_full_prompt=True,  # set False if output is too spammy
         )
 
         # Collect results for this batch

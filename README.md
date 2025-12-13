@@ -1,3 +1,4 @@
+TODO: UPDATE README for our new paper
 # Strategies for Mitigating Social Desirability Bias in Silicon Sampling Studies
 This repository contains the code for the paper "Strategies for Mitigating Social Desirability Bias in Silicon Sampling Studies." All code has been anonymized for confidentiality.
 
