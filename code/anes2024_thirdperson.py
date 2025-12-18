@@ -1,9 +1,9 @@
-from batchcommon import *
+from common import *
 
 ######## No changes from 2020
 SEP=','
-OUTPUT_FN = "./full_results_2020.pkl"
-OUTPUT_CSV = "./full_results_2020.csv"
+OUTPUT_FN = "./full_results_2024.pkl"
+OUTPUT_CSV = "./full_results_2024.csv"
 ID_COL = "V200001"
 VOTE_COL = "V202110x"  # 1-Biden, 2-Trump, 3-Jorgensen, 4-Hawkins
 K1 = "trump"
@@ -17,8 +17,7 @@ query = "In the 2020 presidential election, Donald Trump is the Republican candi
 query += "and Joe Biden is the Democratic candidate, and the respondent voted for"
 ######## No changes from 2020
 
-ANES_FN = './2020 ANES_test.csv'
-time_date = 'Today is November 5, 2024.' # added
+ANES_FN = './2024 ANES_test.csv'
 
 fields_of_interest = {
     'V241501x': {
