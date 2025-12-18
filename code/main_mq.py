@@ -4,7 +4,7 @@ from tqdm import tqdm
 import numpy as np
 
 if sys.argv[1] == '2024':
-    from anes2024 import *
+    from anes2024_thirdperson import *
 
 from common import *
 
@@ -55,7 +55,7 @@ My answer is
     return user_prompt
 
 anesdf = pd.read_csv(ANES_FN, sep=SEP, encoding='latin-1', low_memory=False)
-anes_2024_questionnaire = pd.read_excel("./ANES_2024_multiple_questions_selected.xlsx")
+anes_2024_questionnaire = pd.read_excel("./ANES_2024_multiple_questions_selected_reformulated.xlsx")
 distributions = compute_demographic_distribution(anesdf)
 time_date = "Today is November 5, 2024. "
 fake_results = []
