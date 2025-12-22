@@ -123,10 +123,10 @@ for q_idx in range(START_INDEX, END_INDEX + 1):
             batch_fake_ids.append(fake_id)
 
         # One batched model call instead of many single calls
-        batch_responses = do_query_batch_old_debug(
+        batch_responses = classify_batch(
             batch_system_prompts,
             batch_user_prompts,
-            max_tokens=10,
+            num_options=5,
         )
 
 
