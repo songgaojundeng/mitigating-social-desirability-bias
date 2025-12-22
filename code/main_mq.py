@@ -3,8 +3,8 @@ import pandas as pd
 from tqdm import tqdm
 import numpy as np
 
-if sys.argv[1] == '2024':
-    from anes2024_thirdperson import *
+if sys.argv[1] == '2020':
+    from anes2020 import *
 
 from common import *
 
@@ -55,9 +55,9 @@ My answer is
     return user_prompt
 
 anesdf = pd.read_csv(ANES_FN, sep=SEP, encoding='latin-1', low_memory=False)
-anes_2024_questionnaire = pd.read_excel("./ANES_2024_multiple_questions_selected_reformulated.xlsx")
+anes_2020_questionnaire = pd.read_excel("./ANES_2020_multiple_questions_selected.xlsx")
 distributions = compute_demographic_distribution(anesdf)
-time_date = "Today is November 5, 2024. "
+time_date = "Today is November 3, 2020. "
 fake_results = []
 
 
@@ -68,7 +68,7 @@ END_INDEX = 9    # The ending index for this iteration (inclusive)
 
 
 for idx in range(START_INDEX, END_INDEX + 1):
-    row = anes_2024_questionnaire.iloc[idx]
+    row = anes_2020_questionnaire.iloc[idx]
     full_results = []
 
     code = row["Code"]
@@ -105,7 +105,7 @@ for idx in range(START_INDEX, END_INDEX + 1):
         
         
     # Save the results
-    output_filename = f"full_results_2024_{code}.csv"
+    output_filename = f"full_results_2020_{code}.csv"
     columns = ["ID", *fields_of_interest.keys(), "Prompt", "Response"]
     df_results = pd.DataFrame(full_results, columns=columns)
     df_results.to_csv(output_filename, index=False)

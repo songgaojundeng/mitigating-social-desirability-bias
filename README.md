@@ -2,7 +2,7 @@
 This repository contains the code for the paper "Mitigating Social Desirability Bias in Random Silicon Sampling." All code has been anonymized for confidentiality.
 
 ### Data
-Within the data folder, you'll find the ANES data from the years 2012, 2016, 2020, and 2024. Additionally, the questionnaire file `ANES_2020_multiple_questions_selected.xlsx`, used for the multiple question experiment, is also included. Each dataset can be downloaded from [American National Election Studies (ANES)](https://electionstudies.org/data-center/).
+Within the data folder, you'll find the ANES data from the years 2012, 2016, 2020, and 2024. Additionally, several questionnaire files such as `ANES_2020_multiple_questions_selected.xlsx`, used for the multiple question experiment, is also included. Each dataset can be downloaded from [American National Election Studies (ANES)](https://electionstudies.org/data-center/).
 
 ### Code
 We have reproduced and modified the user/system prompts described in [Sun et al. (2024)](https://arxiv.org/pdf/2402.18144). The code has been modified and augmented based on the code used by [Sun et al. (2024)](https://arxiv.org/pdf/2402.18144).
@@ -15,11 +15,9 @@ We have reproduced and modified the user/system prompts described in [Sun et al.
 
 `anes2012.py`, `anes2016.py`, `anes2020.py`, and `anes2024.py` are scripts for converting demographic information of respondents from each respective ANES dataset into first-person prompts. Similarly, `anesxxxx_thirdperson.py` converts it into third-person prompts.                                                            
 
-`main.py` is a script for performing random silicon sampling on the U.S. presidential election candidate choice for each year. You can run 
+`main_mq.py` is a script for the multiple question experiment. It facilitates random silicon sampling using ANES 2020 data for 10 survey questions selected in our study. You can run 
 ``` 
-python main.py <year>
+python main_mq.py <year>
 ```
 to conduct random silicon sampling on the ANES data for the specified year.
-
-`main_mq.py` is a script for the multiple question experiment. It facilitates random silicon sampling using ANES 2020 data for 10 surveys selected in our study.
 
