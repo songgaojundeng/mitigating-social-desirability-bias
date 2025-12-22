@@ -19,7 +19,7 @@ ANES_FN = './2020 ANES_test.csv'
 fields_of_interest = {
     'V201549x': {
         "template": "Racially, the respondent is XXX.",
-        "valmap": {1: 'white', 2: 'black', 3: 'asian', 4: 'native American', 5: 'hispanic'}
+        "valmap": {1: 'white', 2: 'black',  3: 'hispanic', 4: 'asian', 5: 'native American'}
     },
     'V202022': {
         "template": "The respondent XXX.",
