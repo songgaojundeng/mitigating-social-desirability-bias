@@ -19,7 +19,7 @@ ANES_FN = './anes_timeseries_2012_rawdata.csv'
 fields_of_interest = {
     'dem_raceeth_x': {
         "template": "Racially, I am XXX.",
-        "valmap": {1: 'white', 2: 'black', 3: 'hispanic', 4: 'asian', 5: 'native American'}
+        "valmap": {1: 'white', 2: 'black', 3: 'asian', 4: 'native American', 5: 'hispanic'}
     },
     'discuss_disc': {
         "template": "XXX",
