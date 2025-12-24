@@ -31,7 +31,7 @@ fields_of_interest = {
     #         2: 'never discusses politics with their family or friends'
     #     }
     # }, # the relevant question is V242025 but asking 'How many days in the past week did you talk about politics with family or friends?' and with different answer options, so removed
-    'V241709': {
+    'V241177': {
         "template": "Ideologically, the respondent is XXX.",
         "valmap": {
             1: "extremely liberal",
@@ -43,7 +43,7 @@ fields_of_interest = {
             7: "extremely conservative"
         }
     },
-    'V241707': {
+    'V241227x': {
         "template": "Politically, the respondent is XXX.",
         "valmap": {
             1: "a strong Democrat",
@@ -59,7 +59,7 @@ fields_of_interest = {
         "template": "The respondent XXX.",
         "valmap": {1: "attends church", 2: "does not attend church"}
     },
-    'V241457': {
+    'V241458x': {
         "template": "The respondent is XXX years old.",
         "valmap": {}
     },
