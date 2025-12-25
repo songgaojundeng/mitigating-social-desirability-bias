@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=MLMM-Joint-Publication
+#SBATCH --job-name=mitigate-social-desirability-bias
 #SBATCH --output=gptlogs/%x_%j.out    
 #SBATCH --ntasks-per-node=1
 #SBATCH --nodes=1
