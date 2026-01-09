@@ -23,4 +23,4 @@ export TRANSFORMERS_OFFLINE=1
 export HF_HUB_OFFLINE=1
 
 mkdir -p largelogs
-srun python -u batchmain_mq.py 2020
+srun python -u batchmain_mq.py 2020 first original none

@@ -14,4 +14,4 @@ set -euo pipefail
 export PYTHONPATH="$PWD:${PYTHONPATH:-}"
 
 mkdir -p gptlogs
-srun python -u main_mq.py 2024
+srun python -u main_mq.py 2024 first original none
