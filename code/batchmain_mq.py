@@ -3,12 +3,48 @@ import pandas as pd
 from tqdm import tqdm
 import numpy as np
 
+#For priming/preamble, you ideally will use 1st person and original
+
+#Determine year and point of view of respondent's backstory
+if sys.argv[1] == "2012":
+    if sys.argv[2] == "first":
+        from anes2012 import *
+elif sys.argv[1] == "2016":
+    if sys.argv[2] == "first":
+        from anes2016 import *
+elif sys.argv[1] == "2020":
+    time_date = "Today is November 3, 2020. "
+    base_path = "./ANES_2020_multiple_questions_selected"
+    if sys.argv[2] == "first":
+        from anes2020 import *
+    elif sys.argv[2] == "third":
+        from anes2020_thirdperson import *
+elif sys.argv[1] == "2024":
+    time_date = "Today is November 5, 2024. "
+    base_path = "./ANES_2024_multiple_questions_selected"
+    if sys.argv[2] == "first":
+        from anes2024 import *
+    elif sys.argv[2] == "third":
+        from anes2024_thirdperson import *
+else:
+    raise SystemExit
+
+#Which version of the questionnaire to use
+suffix = {
+    "original": "",
+    "reformulated": "_reformulated",
+    "reverse": "_reverse_v2",
+}
+
+if sys.argv[3] not in suffix:
+    raise SystemExit
+
+anes_questionnaire = pd.read_excel(
+    f"{base_path}{suffix[sys.argv[3]]}.xlsx"
+)
+
 # Brings in tokenizer/model helpers, including do_query_batch
 from batchcommon import *
-
-# ANES-specific imports (2020 case for now)
-if sys.argv[1] == "2020":
-    from anes2020_thirdperson import *
 
 foi_keys = fields_of_interest.keys()
 
@@ -32,7 +68,14 @@ def generate_fake_respondent(distributions):
 
 def gen_backstory_from_fake_person(fake_person):
     """Turn a fake respondent into a natural-language backstory."""
-    backstory = ""
+    if sys.argv[4] == "preamble":
+        backstory = "In this study, we are exploring how people naturally respond to various questions. To ensure meaningful results, it is important that responses reflect your genuine thoughts and feelings. There are no correct or desirable answers, and your responses will not be evaluated or judged. Please answer honestly and without concern for how your answers might be perceived. Your sincerity helps us better understand authentic human responses."
+    elif sys.argv[4] == "priming":
+        backstory = "You value logic, objectivity, and internal consistency. When responding, you prioritize reasoning over emotion, and aim to base your answers on evidence, structure, and rational analysis. Your goal is to provide clear, well-reasoned, and intellectually honest answers that reflect careful thought. The best answer is that which reflects your reasoning process."
+    elif sys.argv[4] == "none":
+        backstory = ""
+    else:
+        raise SystemExit
     for k, anes_val in fake_person.items():
         if anes_val < 0:
             continue
@@ -68,12 +111,7 @@ My answer is
     return user_prompt
 
 anesdf = pd.read_csv(ANES_FN, sep=SEP, encoding="latin-1", low_memory=False)
-anes_2020_questionnaire = pd.read_excel(
-    "./ANES_2020_multiple_questions_selected_reformulated.xlsx"
-)
 distributions = compute_demographic_distribution(anesdf)
-
-time_date = "Today is November 3, 2020. "
 
 # Define the index range of questions this iteration should process
 # Example: [0:9]
@@ -84,7 +122,7 @@ END_INDEX = 9    # inclusive
 BATCH_SIZE = 4
 
 for q_idx in range(START_INDEX, END_INDEX + 1):
-    row = anes_2020_questionnaire.iloc[q_idx]
+    row = anes_questionnaire.iloc[q_idx]
     full_results = []
 
     code = row["Code"]
@@ -138,7 +176,7 @@ for q_idx in range(START_INDEX, END_INDEX + 1):
             full_results.append(result_entry)
 
     # Save the results for this question
-    output_filename = f"full_results_2020_{code}.csv"
+    output_filename = f"full_results_{sys.argv[1]}_{code}.csv"
     columns = ["ID", *fields_of_interest.keys(), "Prompt", "Response"]
     df_results = pd.DataFrame(full_results, columns=columns)
     df_results.to_csv(output_filename, index=False)

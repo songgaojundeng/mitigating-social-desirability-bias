@@ -17,7 +17,9 @@ We have reproduced and modified the user/system prompts described in [Sun et al.
 
 `main_mq.py` is a script for the multiple question experiment. It facilitates random silicon sampling using ANES 2020 data for 10 survey questions selected in our study. You can run 
 ``` 
-python main_mq.py <year>
+python main_mq.py <year> <pov> <questionnaire_version> <priming>
 ```
 to conduct random silicon sampling on the ANES data for the specified year.
+
+`batchmain_mq.py` works solely together with `batchcommon.py` to batch multiple prompts into a single call.
 

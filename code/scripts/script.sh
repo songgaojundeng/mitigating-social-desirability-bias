@@ -25,4 +25,4 @@ export TRANSFORMERS_OFFLINE=1
 export HF_HUB_OFFLINE=1
 
 mkdir -p logs
-srun python -u main_mq.py 2020
+srun python -u main_mq.py 2020 first original priming
