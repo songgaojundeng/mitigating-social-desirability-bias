@@ -13,7 +13,7 @@ foi_keys = fields_of_interest.keys()
 def compute_demographic_distribution(df):
     distributions = {}
     for key in fields_of_interest.keys():
-        value_counts = anesdf[key].value_counts(normalize=True).to_dict()
+        value_counts = df[key].value_counts(normalize=True).to_dict()
         distributions[key] = value_counts
     return distributions
 
