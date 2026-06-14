@@ -21,7 +21,7 @@ suffix = {
     "original": "",
     "reformulated": "_reformulated",
 }
-
+    
 if sys.argv[2] not in suffix:
     raise SystemExit()
 
