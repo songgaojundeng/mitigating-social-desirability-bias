@@ -28,28 +28,27 @@ wvs_questionnaire = pd.read_excel(
     f"{base_path}{suffix[sys.argv[2]]}.xlsx"
 )
 
-if sys.argv[3] == "NLD":
+if sys.argv[4] == "NLD":
     time_date = "The year is 2022. I live in the Netherlands."
     if sys.argv[2] == 'reformulated':
         time_date = "The year is 2022. The respondent lives in the Netherlands."
 
-elif sys.argv[3] == "DEU":
+elif sys.argv[4] == "DEU":
     time_date = "The year is 2018. I live in Germany."
     if sys.argv[2] == 'reformulated':
         time_date = "The year is 2018. The respondent lives in Germany."
 
-elif sys.argv[3] == "GBR":
+elif sys.argv[4] == "GBR":
     time_date = "The year is 2022. I live in the United Kingdom."
     if sys.argv[2] == 'reformulated':
         time_date = "The year is 2022. The respondent lives in the United Kingdom."
 else:
     raise SystemExit()
 
-WVS_FN = f"./WVS_Wave_7_filtered_{sys.argv[3]}.csv"
+WVS_FN = f"./WVS_Wave_7_filtered_{sys.argv[4]}.csv"
 
 
 foi_keys = fields_of_interest.keys()
-
 
 def compute_demographic_distribution(df):
     distributions = {}
@@ -112,7 +111,6 @@ My answer is
 
 wvsdf = pd.read_csv(WVS_FN, sep=",", encoding="latin-1", low_memory=False)
 distributions = compute_demographic_distribution(wvsdf)
-
 START_INDEX = 0
 END_INDEX = len(wvs_questionnaire) - 1
 MAX_RETRIES = 5
@@ -127,11 +125,9 @@ for q_idx in range(START_INDEX, END_INDEX + 1):
     answers = row["Answers"]
 
     user_prompt = generate_prompt_for_question(question, answers)
-
     for i in tqdm(range(len(wvsdf)), disable=True):
         fake_person = generate_fake_respondent(distributions)
         backstory = gen_backstory_from_fake_person(fake_person)
-
         system_prompt = time_date + backstory
         full_prompt = generate_query_with_backstory(system_prompt, user_prompt)
 
@@ -161,9 +157,7 @@ for q_idx in range(START_INDEX, END_INDEX + 1):
 
         if not success:
             print(f"Failed to get a response after {MAX_RETRIES} retries for respondent {fake_id}.")
-
-    output_filename = f"full_results_wvs7_{sys.argv[2]}_{code}_{sys.argv[3]}.csv"
+    output_filename = f"full_results_wvs7_{sys.argv[2]}_{code}_{sys.argv[4]}.csv"
     columns = ["ID", *fields_of_interest.keys(), "Prompt", "Response"]
-
     df_results = pd.DataFrame(full_results, columns=columns)
     df_results.to_csv(output_filename, index=False)
