@@ -29,19 +29,19 @@ wvs_questionnaire = pd.read_excel(
 )
 
 if sys.argv[4] == "NLD":
-    time_date = "The year is 2022. I live in the Netherlands."
+    time_date = "The year is 2022. I live in the Netherlands. "
     if sys.argv[2] == 'reformulated':
-        time_date = "The year is 2022. The respondent lives in the Netherlands."
+        time_date = "The year is 2022. The respondent lives in the Netherlands. "
 
 elif sys.argv[4] == "DEU":
-    time_date = "The year is 2018. I live in Germany."
+    time_date = "The year is 2018. I live in Germany. "
     if sys.argv[2] == 'reformulated':
-        time_date = "The year is 2018. The respondent lives in Germany."
+        time_date = "The year is 2018. The respondent lives in Germany. "
 
 elif sys.argv[4] == "GBR":
-    time_date = "The year is 2022. I live in the United Kingdom."
+    time_date = "The year is 2022. I live in the United Kingdom. "
     if sys.argv[2] == 'reformulated':
-        time_date = "The year is 2022. The respondent lives in the United Kingdom."
+        time_date = "The year is 2022. The respondent lives in the United Kingdom. "
 else:
     raise SystemExit()
 
