@@ -45,6 +45,9 @@ elif sys.argv[3] == "GBR":
 else:
     raise SystemExit()
 
+WVS_FN = f"./WVS_Wave_7_filtered_{sys.argv[3]}.csv"
+
+
 foi_keys = fields_of_interest.keys()
 
 
