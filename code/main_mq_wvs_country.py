@@ -2,57 +2,51 @@ import sys
 import pandas as pd
 from tqdm import tqdm
 import numpy as np
-
+from common import *
+import os
 
 #For reformulated prompts, you ideally will use 3rd person
-
-if sys.argv[1] == "first":
-    from wvs7 import *
-elif sys.argv[1] == "third":
-    from wvs7_thirdperson import *
+# NLD first original none
+if sys.argv[1] == "NLD":
+    from wvs7_NLD import *
+    survey_year = '2022'
+    country_name = 'the Netherlands'
+elif sys.argv[1] == "DEU":
+    from wvs7_DEU import *
+    survey_year = '2018'
+    country_name = 'Germany'
+elif sys.argv[1] == "GBR":
+    from wvs7_GBR import *
+    survey_year = '2022'
+    country_name = 'the United Kingdom'
 else:
     raise SystemExit()
 
-from common import *
+
+if sys.argv[2] == "first":
+    fields_of_interest_country = fields_of_interest
+    time_date = f"The year is {survey_year}. I live in {country_name}. "
+elif sys.argv[2] == "third":
+    fields_of_interest_country = fields_of_interest_third
+    time_date = f"The year is {survey_year}. The respondent lives in {country_name}. "
+else:
+    raise SystemExit()
 
 base_path = "./WVS_Wave7_multiple_questions_selected"
 suffix = {
     "original": "",
     "reformulated": "_reformulated",
 }
-    
-if sys.argv[2] not in suffix:
+if sys.argv[3] not in suffix:
     raise SystemExit()
 
 wvs_questionnaire = pd.read_excel(
-    f"{base_path}{suffix[sys.argv[2]]}.xlsx"
+    f"{base_path}{suffix[sys.argv[3]]}.xlsx"
 )
-
-if sys.argv[4] == "NLD":
-    time_date = "The year is 2022. I live in the Netherlands. "
-    if sys.argv[2] == 'reformulated':
-        time_date = "The year is 2022. The respondent lives in the Netherlands. "
-
-elif sys.argv[4] == "DEU":
-    time_date = "The year is 2018. I live in Germany. "
-    if sys.argv[2] == 'reformulated':
-        time_date = "The year is 2018. The respondent lives in Germany. "
-
-elif sys.argv[4] == "GBR":
-    time_date = "The year is 2022. I live in the United Kingdom. "
-    if sys.argv[2] == 'reformulated':
-        time_date = "The year is 2022. The respondent lives in the United Kingdom. "
-else:
-    raise SystemExit()
-
-WVS_FN = f"./WVS_Wave_7_filtered_{sys.argv[4]}.csv"
-
-
-foi_keys = fields_of_interest.keys()
 
 def compute_demographic_distribution(df):
     distributions = {}
-    for key in fields_of_interest.keys():
+    for key in fields_of_interest_country.keys():
         s = df[key]
         distributions[key] = s.value_counts(normalize=True).to_dict()
     return distributions
@@ -66,11 +60,11 @@ def generate_fake_respondent(distributions):
 
 
 def gen_backstory_from_fake_person(fake_person):
-    if sys.argv[3] == "preamble":
+    if sys.argv[4] == "preamble":
         backstory = "In this study, we are exploring how people naturally respond to various questions. To ensure meaningful results, it is important that responses reflect your genuine thoughts and feelings. There are no correct or desirable answers, and your responses will not be evaluated or judged. Please answer honestly and without concern for how your answers might be perceived. Your sincerity helps us better understand authentic human responses."
-    elif sys.argv[3] == "priming":
+    elif sys.argv[4] == "priming":
         backstory = "You value logic, objectivity, and internal consistency. When responding, you prioritize reasoning over emotion, and aim to base your answers on evidence, structure, and rational analysis. Your goal is to provide clear, well-reasoned, and intellectually honest answers that reflect careful thought. The best answer is that which reflects your reasoning process."
-    elif sys.argv[3] == "none":
+    elif sys.argv[4] == "none":
         backstory = ""
     else:
         raise SystemExit()
@@ -79,8 +73,8 @@ def gen_backstory_from_fake_person(fake_person):
         if wvs_val < 0:
             continue
 
-        elem_template = fields_of_interest[k]["template"]
-        elem_map = fields_of_interest[k]["valmap"]
+        elem_template = fields_of_interest_country[k]["template"]
+        elem_map = fields_of_interest_country[k]["valmap"]
 
         if len(elem_map) == 0:
             backstory += " " + elem_template.replace("XXX", str(wvs_val))
@@ -114,7 +108,6 @@ distributions = compute_demographic_distribution(wvsdf)
 START_INDEX = 0
 END_INDEX = len(wvs_questionnaire) - 1
 MAX_RETRIES = 5
-
 
 for q_idx in range(START_INDEX, END_INDEX + 1):
     row = wvs_questionnaire.iloc[q_idx]
@@ -157,7 +150,13 @@ for q_idx in range(START_INDEX, END_INDEX + 1):
 
         if not success:
             print(f"Failed to get a response after {MAX_RETRIES} retries for respondent {fake_id}.")
-    output_filename = f"full_results_wvs7_{sys.argv[2]}_{code}_{sys.argv[4]}.csv"
-    columns = ["ID", *fields_of_interest.keys(), "Prompt", "Response"]
+        # break
+
+    # create folder sys.argv[2]/sys.argv[1]  (e.g. reformulated/GBR)
+    output_dir = os.path.join(sys.argv[3], sys.argv[1])
+    os.makedirs(output_dir, exist_ok=True)
+    output_filename = f"full_results_wvs7_{sys.argv[3]}_{sys.argv[1]}_{code}.csv"
+    output_path = os.path.join(output_dir, output_filename)
+    columns = ["ID", *fields_of_interest_country.keys(), "Prompt", "Response"]
     df_results = pd.DataFrame(full_results, columns=columns)
-    df_results.to_csv(output_filename, index=False)
+    df_results.to_csv(output_path, index=False)
