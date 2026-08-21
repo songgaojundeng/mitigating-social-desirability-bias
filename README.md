@@ -23,7 +23,7 @@ to conduct random silicon sampling on the ANES data for the specified year.
 
 `main_mq_wvs_country.py` is a script for the WVS survey. It facilitates random silicon sampling using WVS country data for 10 survey questions selected in our study.  You can run 
 ``` 
-python main_mq_wvs_country.py <year> <country: DEU/NLD/GBR> <questionnaire_version: original/reformulated> <none/priming/preamble>
+python main_mq_wvs_country.py <country: DEU/NLD/GBR> <questionnaire_version: original/reformulated> <none/priming/preamble>
 ```
 
 
