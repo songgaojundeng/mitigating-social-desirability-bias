@@ -1,19 +1,6 @@
-from newcommon import *
+from common import *
 
 SEP=','
-OUTPUT_FN = "./full_results_2016.pkl"
-OUTPUT_CSV = "./full_results_2016.csv"
-ID_COL = "caseid"
-VOTE_COL = "presvote2012_x" 
-K1 = "romney"
-K2 = "obama"
-
-tok_sets = {
-"romney": gen_variants( [ "romney", "mitt", "republican", "conservative" ] ),
-"obama": gen_variants( [ "obama", "barack", "democrat", "democratic", "liberal"] ),
-}
-
-query = "In the 2012 presidential election, I voted for"
 ANES_FN = './anes_timeseries_2012_rawdata.csv'
 
 fields_of_interest = {

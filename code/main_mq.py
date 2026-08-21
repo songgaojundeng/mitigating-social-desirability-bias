@@ -2,7 +2,9 @@ import sys
 import pandas as pd
 from tqdm import tqdm
 import numpy as np
+import os
 
+#For reformulated prompts, ideally use 3rd person
 #For priming/preamble, you ideally will use 1st person and original
 
 if sys.argv[1] == "2012":
@@ -42,6 +44,8 @@ anes_questionnaire = pd.read_excel(
 )
 
 from common import *
+# from common_llama8b import * #llama8b
+# from common_llama3170b import * #llama70b
 
 foi_keys = fields_of_interest.keys()
 
@@ -120,6 +124,7 @@ for idx in range(START_INDEX, END_INDEX + 1):
     for idx in tqdm(range(len(anesdf)), disable=True):
         fake_person = generate_fake_respondent(distributions)
         backstory = gen_backstory_from_fake_person(fake_person)
+        # backstory = '' # set empty when testing no demo profile
         user_prompt = generate_prompt_for_question(question, answers)
         system_prompt = time_date + backstory
 
@@ -146,7 +151,13 @@ for idx in range(START_INDEX, END_INDEX + 1):
         
         
     # Save the results
+    output_dir = os.path.join('ANES20-gpt4.1mini',sys.argv[3], sys.argv[4])
+    ## change folder name "ANES20-gpt4.1mini" accordingly when run ANES 2024 or llama8b or 70b
+    os.makedirs(output_dir, exist_ok=True)
+
     output_filename = f"full_results_{sys.argv[1]}_{code}.csv"
+    output_path = os.path.join(output_dir, output_filename)
+
     columns = ["ID", *fields_of_interest.keys(), "Prompt", "Response"]
     df_results = pd.DataFrame(full_results, columns=columns)
-    df_results.to_csv(output_filename, index=False)
+    df_results.to_csv(output_path, index=False)

@@ -5,8 +5,11 @@ import numpy as np
 from common import *
 import os
 
-#For reformulated prompts, you ideally will use 3rd person
+#For reformulated prompts, ideally use 3rd person
+#For priming/preamble, you ideally will use 1st person and original
+
 # NLD first original none
+
 if sys.argv[1] == "NLD":
     from wvs7_NLD import *
     survey_year = '2022'

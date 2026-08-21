@@ -1,22 +1,6 @@
 from common import *
 
-######## No changes from 2020
 SEP=','
-OUTPUT_FN = "./full_results_2024.pkl"
-OUTPUT_CSV = "./full_results_2024.csv"
-ID_COL = "V200001"
-VOTE_COL = "V202110x"  # 1-Biden, 2-Trump, 3-Jorgensen, 4-Hawkins
-K1 = "trump"
-K2 = "biden"
-tok_sets = {
-    "trump": gen_variants([ "donald", "trump", "republican", "conservative"]),
-    "biden": gen_variants([ "joe", "joseph", "biden", "democrat", "democratic", "liberal"])
-}
-
-query = "In the 2020 presidential election, Donald Trump is the Republican candidate, "
-query += "and Joe Biden is the Democratic candidate, and the respondent voted for"
-######## No changes from 2020
-
 ANES_FN = './2024 ANES_test.csv'
 
 fields_of_interest = {
