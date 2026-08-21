@@ -31,7 +31,7 @@ python main_mq_wvs_country.py <year> <country: DEU/NLD/GBR> <questionnaire_versi
 The folder `Publication Results` contains all random silicon sampling results obtained in this study.
 
 ### Analysis
-The folder `results-analysis` contains all code used for analyzing the results.
+The folder `analysis` contains all code used for analyzing the results.
 
 #### Citation [to be updated]
 
