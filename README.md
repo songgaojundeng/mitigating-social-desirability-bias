@@ -15,15 +15,15 @@ We have reproduced and modified the user/system prompts described in [Sun et al.
 `anes2012.py`, `anes2016.py`, `anes2020.py`, and `anes2024.py` are scripts for converting demographic information of respondents from each respective ANES dataset into first-person prompts. Similarly, `anesxxxx_thirdperson.py` converts it into third-person prompts.                                                            
 
 `main_mq.py` is a script for the multiple question experiment. It facilitates random silicon sampling using ANES 2020 data for 10 survey questions selected in our study (8 for ANES 2024).  You can run 
-``` 
+```python 
 python main_mq.py <year> <pov: first/third> <questionnaire_version: original/reformulated> <none/priming/preamble>
 ```
 to conduct random silicon sampling on the ANES data for the specified year.
  
 
 `main_mq_wvs_country.py` is a script for the WVS survey. It facilitates random silicon sampling using WVS country data for 10 survey questions selected in our study.  You can run 
-``` 
-python main_mq_wvs_country.py <country: DEU/NLD/GBR> <questionnaire_version: original/reformulated> <none/priming/preamble>
+```python
+python main_mq_wvs_country.py <country: DEU/NLD/GBR> <pov: first/third> <questionnaire_version: original/reformulated> <none/priming/preamble>
 ```
 
 
