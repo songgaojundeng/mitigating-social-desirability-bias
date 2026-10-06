@@ -33,8 +33,17 @@ The folder `Publication Results` contains all random silicon sampling results ob
 ### Analysis
 The folder `analysis` contains all code used for analyzing the results.
 
-#### Citation [to be updated]
+#### Citation
 
 If you find this repository or our work useful in your research, please consider citing our paper:
 
-@article{...} 
+@article{
+chapala2026mitigating,
+title={Mitigating Social Desirability Bias in Random Silicon Sampling},
+author={Sashank Chapala and Maksym Mironov and Songgaojun Deng},
+journal={Transactions on Machine Learning Research},
+issn={2835-8856},
+year={2026},
+url={https://openreview.net/forum?id=1njhuA8B3r},
+note={}
+} 
